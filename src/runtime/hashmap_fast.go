@@ -585,6 +585,7 @@ again:
 
 	if insertb == nil {
 		// all current buckets are full, allocate a new one.
+		// 所有当前的buckets都是满的，开辟一个新的
 		insertb = h.newoverflow(t, b)
 		inserti = 0 // not necessary, but avoids needlessly spilling inserti
 	}

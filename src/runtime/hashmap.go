@@ -295,6 +295,7 @@ func makemap_small() *hmap {
 // can be created on the stack, h and/or bucket may be non-nil.
 // If h != nil, the map can be created directly in h.
 // If h.buckets != nil, bucket pointed to can be used as the first bucket.
+// 初始化hashmap
 func makemap(t *maptype, hint int, h *hmap) *hmap {
 	// The size of hmap should be 48 bytes on 64 bit
 	// and 28 bytes on 32 bit platforms.
@@ -340,6 +341,8 @@ func makemap(t *maptype, hint int, h *hmap) *hmap {
 // the key is not in the map.
 // NOTE: The returned pointer may keep the whole map live, so don't
 // hold onto it for very long.
+// 获取hashmap的值，返回一个指针，指向h[key]。
+// 不会返回nil，如果map中不存在指定的key，返回类型的零值
 func mapaccess1(t *maptype, h *hmap, key unsafe.Pointer) unsafe.Pointer {
 	if raceenabled && h != nil {
 		callerpc := getcallerpc()
@@ -445,6 +448,7 @@ func mapaccess2(t *maptype, h *hmap, key unsafe.Pointer) (unsafe.Pointer, bool) 
 }
 
 // returns both key and value. Used by map iterator
+// 同时反馈key和value，map迭代使用
 func mapaccessK(t *maptype, h *hmap, key unsafe.Pointer) (unsafe.Pointer, unsafe.Pointer) {
 	if h == nil || h.count == 0 {
 		return nil, nil
@@ -502,6 +506,7 @@ func mapaccess2_fat(t *maptype, h *hmap, key, zero unsafe.Pointer) (unsafe.Point
 }
 
 // Like mapaccess, but allocates a slot for the key if it is not present in the map.
+// 如果key不在map中存在，为key开辟一个slot
 func mapassign(t *maptype, h *hmap, key unsafe.Pointer) unsafe.Pointer {
 	if h == nil {
 		panic(plainError("assignment to entry in nil map"))
